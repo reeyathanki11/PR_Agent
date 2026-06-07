@@ -3,7 +3,7 @@
 import subprocess
 import json
 from agent.tools.llm_tools import call_llm
-from agent.prompts.prompts import CODE_REVIEW_PROMPT
+from agent.prompts import CODE_REVIEW_PROMPT
 
 
 def review_node(state: dict) -> dict:
