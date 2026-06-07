@@ -1,30 +1,33 @@
-from agent.tools.github_tools import repo
+# agent/nodes/comment.py
+
+import os
+from github import Github
+from agent.state import PRState
 
 
-def comment_node(state):
+def comment_node(state: PRState) -> PRState:
+    token     = os.environ.get("GITHUB_TOKEN", "")
+    repo_name = os.environ.get("GITHUB_REPOSITORY", "")
 
-    pr = repo.get_pull(
-        state["pr_number"]
-    )
+    if not token or not repo_name:
+        print("[COMMENT] Skipping — GITHUB_TOKEN or GITHUB_REPOSITORY not set.")
+        return state
 
-    comment = f"""
-# 🤖 AI PR Review
+    try:
+        g    = Github(token)
+        repo = g.get_repo(repo_name)
+        pr   = repo.get_pull(state["pr_number"])
 
-Files Reviewed:
+        body = state.get("review_report", "No report generated.")
 
-{chr(10).join(state['changed_files'])}
+        pr.create_issue_comment(
+            body + "\n\n---\n*Posted by AI PR Review Agent*"
+        )
+        print(f"[COMMENT] ✅ Comment posted on PR #{state['pr_number']}")
 
----
+    except Exception as e:
+        # Do NOT crash the whole agent — just log and move on
+        print(f"[COMMENT] ⚠️  Could not post comment: {e}")
+        print("[COMMENT]    Check workflow permissions: pull-requests: write")
 
-{state['review_report']}
-"""
-
-    pr.create_issue_comment(
-        comment
-    )
-
-    print(
-        "Comment posted successfully"
-    )
-
-    return {}
+    return state
