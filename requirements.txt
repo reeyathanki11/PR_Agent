@@ -2,3 +2,8 @@ langgraph
 openai
 PyGithub
 python-dotenv
+
+black
+ruff
+bandit
+pytest
