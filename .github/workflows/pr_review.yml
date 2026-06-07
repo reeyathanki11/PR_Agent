@@ -6,15 +6,20 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
-# ✅ THIS IS THE KEY FIX — explicitly grant write permissions
+# Must be at the TOP LEVEL — not inside jobs
 permissions:
   contents: read
-  pull-requests: write      # needed to post PR comments
-  issues: write             # needed for create_issue_comment
+  pull-requests: write
+  issues: write
 
 jobs:
   ai-review:
     runs-on: ubuntu-latest
+    # Also set at job level — both are required
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
 
     steps:
       - uses: actions/checkout@v4
@@ -29,7 +34,8 @@ jobs:
 
       - name: Run PR Agent
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # ✅ auto-provided, no setup needed
+          GITHUB_TOKEN: ${{ secrets.AI_GITHUB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GITHUB_EVENT_PATH: ${{ github.event_path }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: python run_agent.py
