@@ -30,7 +30,7 @@ jobs:
 
       - name: Run PR Agent
         env:
-          GITHUB_TOKEN: ${{ secrets.AI_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GITHUB_EVENT_PATH: ${{ github.event_path }}
           GITHUB_REPOSITORY: ${{ github.repository }}
