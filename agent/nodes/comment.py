@@ -1,11 +1,8 @@
-# agent/nodes/comment.py
-
 import os
 import requests
 
 
 def comment_node(state: dict) -> dict:
-
     token     = os.environ.get("GITHUB_TOKEN", "")
     repo      = os.environ.get("GITHUB_REPOSITORY", "")
     pr_number = state.get("pr_number")
@@ -15,10 +12,9 @@ def comment_node(state: dict) -> dict:
         return state
 
     body = state.get("review_report", "Agent completed.")
-    body = f"{body}\n\n---\n*Posted by AI PR Review Agent 🤖*"
+    body = f"{body}\n\n---\n*Posted by AI PR Review Agent*"
 
     url = f"https://api.github.com/repos/{repo}/issues/{pr_number}/comments"
-
     headers = {
         "Authorization":        f"Bearer {token}",
         "Accept":               "application/vnd.github+json",

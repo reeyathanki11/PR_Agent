@@ -1,12 +1,9 @@
-# .github/workflows/pr_review.yml
-
 name: AI PR Review Agent
 
 on:
   pull_request:
     types: [opened, synchronize, reopened]
 
-# Must be at the TOP LEVEL — not inside jobs
 permissions:
   contents: read
   pull-requests: write
@@ -15,7 +12,6 @@ permissions:
 jobs:
   ai-review:
     runs-on: ubuntu-latest
-    # Also set at job level — both are required
     permissions:
       contents: read
       pull-requests: write
@@ -34,7 +30,7 @@ jobs:
 
       - name: Run PR Agent
         env:
-          GITHUB_TOKEN: ${{ secrets.AI_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GITHUB_EVENT_PATH: ${{ github.event_path }}
           GITHUB_REPOSITORY: ${{ github.repository }}
