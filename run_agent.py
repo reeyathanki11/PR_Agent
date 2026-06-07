@@ -17,6 +17,7 @@ pr_number = event[
 
 graph.invoke(
     {
-        "pr_number": pr_number
+        "pr_number": pr_number,
+        "retry_count": 0
     }
 )

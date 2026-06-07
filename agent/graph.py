@@ -19,6 +19,7 @@ from agent.nodes.comment import (
 
 builder = StateGraph(PRState)
 
+# Nodes
 builder.add_node(
     "collect",
     collect_node
@@ -34,10 +35,12 @@ builder.add_node(
     comment_node
 )
 
+# Entry Point
 builder.set_entry_point(
     "collect"
 )
 
+# Flow
 builder.add_edge(
     "collect",
     "review"
@@ -53,4 +56,5 @@ builder.add_edge(
     END
 )
 
+# Compile Graph
 graph = builder.compile()

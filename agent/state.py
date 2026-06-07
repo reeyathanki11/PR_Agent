@@ -2,6 +2,7 @@ from typing import TypedDict, List
 
 
 class PRState(TypedDict):
+
     pr_number: int
 
     changed_files: List[str]
@@ -9,3 +10,7 @@ class PRState(TypedDict):
     file_contents: str
 
     review_report: str
+
+    test_result: str
+
+    approved: bool
